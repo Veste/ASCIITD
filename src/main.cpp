@@ -1,5 +1,6 @@
 #include <ncurses.h>
 #include <iostream>
+#include "printw_ex.h"
 
 int main(int argc, char* argv[]) {
 
@@ -9,18 +10,13 @@ int main(int argc, char* argv[]) {
   raw();
   keypad(stdscr, TRUE);
   noecho();
-
-  printw("Type any character to see it in bold\n");
+  
+  printw("Choose an example: \n");
+  printw("  printw (p)\n");
+  
   ch = getch();
-
-  if (ch == KEY_F(1)) {
-    // The magic key I guess ????
-    printw("F1 key pressed!");
-  } else {
-    printw("The pressed key is ");
-    attron(A_BOLD);
-    printw("%c", ch);
-    attroff(A_BOLD);
+  if (ch == 'p') {
+    printw_ex();
   }
   refresh();
 
