@@ -1,5 +1,5 @@
 #include <ncurses.h> 
-#include <string.h>
+#include <cstring>
 
 #include "printw_ex.h"
 
@@ -16,10 +16,6 @@ void printw_ex() {
   mvprintw(row/2, (col - strlen(msg))/2, "%s", msg);
 
   mvprintw(row-2, 0, "This screen has %d rows and %d columns\n", row, col);
-
-  refresh();
-  
-  getch();
 
 }
 

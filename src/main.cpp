@@ -1,6 +1,7 @@
 #include <ncurses.h>
 #include <iostream>
 #include "printw_ex.h"
+#include "printbox.h"
 
 int main(int argc, char* argv[]) {
 
@@ -12,11 +13,19 @@ int main(int argc, char* argv[]) {
   noecho();
   
   printw("Choose an example: \n");
-  printw("  printw (p)\n");
+  printw("  printw      (p)\n");
+  printw("  print box   (b)\n");
   
   ch = getch();
-  if (ch == 'p') {
-    printw_ex();
+  switch ( ch ) {
+    case 'p':
+      printw_ex();
+      break;
+    case 'b':
+      print_box( 100, 20, 'b' );
+      break;
+    default:
+      break;
   }
   refresh();
 
