@@ -2,6 +2,7 @@
 #include <iostream>
 #include "printw_ex.h"
 #include "printbox.h"
+#include "animate.h"
 
 int main(int argc, char* argv[]) {
 
@@ -15,6 +16,7 @@ int main(int argc, char* argv[]) {
   printw("Choose an example: \n");
   printw("  printw      (p)\n");
   printw("  print box   (b)\n");
+  printw("  animate     (a)\n");
   
   ch = getch();
   switch ( ch ) {
@@ -24,6 +26,8 @@ int main(int argc, char* argv[]) {
     case 'b':
       print_box( 100, 20, 'b' );
       break;
+    case 'a':
+      animate( );
     default:
       break;
   }
