@@ -45,6 +45,7 @@ bool print_box( int width, int height, char ch ) {
   std::string row_text( width, ch );
   mvprintw( top_row, left_col, row_text.c_str() );
   mvprintw( bot_row, left_col, row_text.c_str() );
+  mvaddch( top_row + (height/2), left_col + (width/2), 'c' );
 
   for ( int i = top_row+1; i < bot_row; i++ ) {
     mvaddch( i, left_col, ch );
