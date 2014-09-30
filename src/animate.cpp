@@ -13,6 +13,7 @@ void animate( ) {
   // clear the ncurses window
   erase();
   move( 0, 0 );
+  curs_set(0);
 
   int sc_rows = 0, sc_cols = 0;
 
