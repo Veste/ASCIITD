@@ -36,6 +36,7 @@ void animate( ) {
   // we want to print in
   int count = 0;
 
+  attron( A_REVERSE );
   mvaddch( row, (col + state) - 2, 'a' );
   while ( true ) {
 
@@ -45,16 +46,19 @@ void animate( ) {
 
     // after x frames
     if ( count++ == 30 ) {
+      attroff( A_REVERSE );
       mvaddch( row, (col + state) - 2, ' ' );
       if ( ++state == 4 ) {
         state = 0;
       }
+      attron( A_REVERSE );
       mvaddch( row, (col + state) - 2, 'a' );
       count = 0;
     }
 
     usleep( fps );
   }
+  attroff( A_REVERSE );
 
   mvprintw( row + 1, (col - 7), "Press any key" );
 
