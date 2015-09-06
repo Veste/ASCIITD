@@ -38,34 +38,47 @@ void print_win_params( WIN *p_win ) {
 }
 
 
-void create_box( WIN *p_win, bool flag ) {
+void destroy_box( WIN *p_win ) {
+
   int i, j,
-      x = p_win->startx, 
+    x = p_win->startx,
+    y = p_win->starty,
+    w = p_win->width,
+    h = p_win->height;
+
+  for ( j = y; j <= (y + h); j++ ) {
+    for ( i = x; i <= (x + w); i++ ) {
+      mvaddch( j, i, ' ' );
+    }
+  }
+  
+  refresh( );
+}
+
+
+void create_box( WIN *p_win ) {
+  int x = p_win->startx, 
       y = p_win->starty, 
       w = p_win->width, 
       h = p_win->height;
 
-  if ( flag ) {
-    WIN_BORDER b = p_win->border;
+  WIN_BORDER b = p_win->border;
 
-    mvaddch( y, x, b.tl );
-    mvaddch( y, (x + w), b.tr );
-    mvaddch( (y + h), x, b.bl );
-    mvaddch( (y + h), (x + w), b.br );
+  // Draw the 4 corners
+  mvaddch( y, x, b.tl );
+  mvaddch( y, (x + w), b.tr );
+  mvaddch( (y + h), x, b.bl );
+  mvaddch( (y + h), (x + w), b.br );
 
-    mvhline( y, (x + 1), b.ts, (w - 1) );
-    mvhline( (y + h), (x + 1), b.bs, (w - 1) );
+  // Draw the top side and bottom side
+  mvhline( y, (x + 1), b.ts, (w - 1) );
+  mvhline( (y + h), (x + 1), b.bs, (w - 1) );
 
-    mvvline( (y + 1), x, b.ls, (h - 1) );
-    mvvline( (y + 1), (x + w), b.rs, (h - 1) );
-  } else {
-    for ( j = y; j <= (y + h); j++ ) {
-      for ( i = x; i <= (x + w); i++ ) {
-        mvaddch( j, i, ' ' );
-      }
-    }
-  }
+  // Draw the left side and right side
+  mvvline( (y + 1), x, b.ls, (h - 1) );
+  mvvline( (y + 1), (x + w), b.rs, (h - 1) );
 
+  // Push to the screen
   refresh( );
 }
 
@@ -81,37 +94,42 @@ void windowing02( ) {
   erase( );
   move( 0, 0 );
 
+  // Assign border characters and starting width/height/position
   init_win_params( &win );
   print_win_params( &win );
 
+  // Draw bold backgrounded text at the top of the screen
   attron( COLOR_PAIR(5) | A_BOLD );
   printw( "Press X to exit" );
   refresh( );
   attroff( COLOR_PAIR(5) | A_BOLD );
   attrset( A_NORMAL );
 
-  create_box( &win, TRUE );
+  // Draw the box onto the screen
+  create_box( &win );
+  // While the input character isn't an x, perform some actions
   while( (ch = getch()) != 'x' ) {
+    // Use the keyboard keys to "move" the box (destroy and recreate it)
     switch ( ch ) {
       case KEY_LEFT:
-        create_box( &win, false );
+        destroy_box( &win );
         win.startx--;
-        create_box( &win, true );
+        create_box( &win );
         break;
       case KEY_RIGHT:
-        create_box( &win, false );
+        destroy_box( &win );
         win.startx++;
-        create_box( &win, true );
+        create_box( &win );
         break;
       case KEY_UP:
-        create_box( &win, false );
+        destroy_box( &win );
         win.starty--;
-        create_box( &win, true );
+        create_box( &win );
         break;
       case KEY_DOWN:
-        create_box( &win, false );
+        destroy_box( &win );
         win.starty++;
-        create_box( &win, true );
+        create_box( &win );
         break;
       default:
         break;
